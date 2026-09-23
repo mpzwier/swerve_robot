@@ -406,7 +406,7 @@ CallbackReturn SwerveDriveController::on_configure(
   try {
     // Tf State publisher
     tf_odom_s_publisher_ =
-      get_node()->create_publisher<TfStateMsg>("/tf", rclcpp::SystemDefaultsQoS());
+      get_node()->create_publisher<TfStateMsg>("tf", rclcpp::SystemDefaultsQoS());
     rt_tf_odom_state_publisher_ = std::make_unique<TfStatePublisher>(tf_odom_s_publisher_);
   } catch (const std::exception & e) {
     fprintf(
