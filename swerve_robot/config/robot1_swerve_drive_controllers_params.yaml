@@ -1,0 +1,116 @@
+/**/controller_manager:  #needs to have /**/ for the namespace of multiple robots 
+  ros__parameters:
+    update_rate: 200
+    use_sim_time: true
+
+    swerve_drive_controller:
+      type: ffw_swerve_drive_controller/SwerveDriveController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+/**/swerve_drive_controller:
+  ros__parameters:
+
+# CHANGE TOPIC!
+
+    cmd_vel_topic: cmd_vel #/robot1/cmd_vel #use the cmd_vel from the velocity smoother
+    use_stamped_cmd_vel: false #must be false otherwise problems with docking server using the same topic 
+    cmd_vel_timeout: 0.5
+    
+
+    #original
+    steering_joint_names: ["fl_steering_joint", "fr_steering_joint", "rl_steering_joint", "rr_steering_joint"]
+
+    wheel_joint_names: ["fl_wheel_joint", "fr_wheel_joint", "rl_wheel_joint", "rr_wheel_joint"]
+
+    wheel_radius: 0.0381 # [m]
+    
+
+    module_x_offsets: [ 0.2555,  0.2555, -0.2555, -0.2555] # x-distance between base_link and steering angle joint [m]  =>
+    module_y_offsets: [ 0.1555, -0.1555,  0.1555, -0.1555] # y-distance between base_link and steering angle joint [m]
+    module_angle_offsets: [ 0.0, 0.0, 0.0, 0.0] # initial angle difference between base_link and steering angle joint [rad]
+    module_steering_limit_lower: [ -6.28, -6.28, -6.28, -6.28] # minimum steering angle [rad]
+    module_steering_limit_upper: [  6.28,  6.28,  6.28, 6.28] # maximum steering angle [rad]
+    steering_to_wheel_y_offsets: [ 0.0, 0.0, 0.0, 0.0 ] # offset between steering angle joint and wheel joint (Y-axis) [m]
+
+    module_wheel_speed_limit_lower: [ -50.0, -50.0, -50.0, -50.0] # wheel speed [rad/s] => x * wheel_radius [m/s]
+    module_wheel_speed_limit_upper: [ 50.0, 50.0, 50.0, 50.0 ] # wheel speed  [rad/s]
+
+    # Steering control parameters
+    enabled_steering_flip: true # select the shortest steering direciton or not, true or false
+    enabled_steering_angular_velocity_limit: true # select the shortest steering direciton or not, true or false
+    steering_angular_velocity_limit: 100.0 # steering angular velocity [rad/s]
+
+    steering_alignment_angle_error_threshold: 0.1 #1.0 # wheel stop when the difference b/w current steering angle and target steering angle is below it # [rad] => x * 57.2958 [deg]
+    steering_alignment_start_angle_error_threshold: 0.01
+    steering_alignment_start_speed_error_threshold: 0.1
+    enabled_open_loop: false # use open-loop control or not, true or false
+
+    # Wheel control parameters
+    enabled_wheel_saturation_scaling: true # adjust wheel scaling factor when wheel speed reaches maximum speed # true or false
+
+    # odometry
+    odom_solver_method: "svd"  # "pseudo_inverse", "qr", "svd"
+    odom_source: "feedback"  # "command" or "feedback", Choose if open-loop or not (feedback) is used for odometry calculation.
+    base_frame_id: base_footprint
+    odom_frame_id: odom
+    enable_odom_tf: false #must be false, odom comes from Robot Localization (EKF)
+    pose_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.001]
+    velocity_rolling_window_size: 10 
+
+    # visualization
+    enable_visualization: true
+    visualization_marker_topic: "swerve_visualization_markers"
+    visualization_update_time: 0.10 # [sec]
+
+    # Diagnostics
+    enable_direct_joint_commands: false
+    direct_joint_command_timeout_sec: 1.0  # [sec]
+    direct_joint_command_topic: "~/direct_joint_commands"
+
+    enabled_steering_angular_limit: false
+
+    # Velocity and acceleration limits
+    # Whenever a min_* is unspecified, default to -max_*
+    enabled_speed_limits: false
+    publish_limited_velocity: true
+    linear:
+      x:
+        has_velocity_limits    : true
+        max_velocity           : 2.50  # m/s
+        min_velocity           : -2.50 # m/s
+        has_acceleration_limits: true
+        max_acceleration       : 1.0  # m/s^2
+        min_acceleration       : -1.0 # m/s^2
+        has_jerk_limits        : true
+        max_jerk               : 1.0  # m/s^3
+        min_jerk               : -1.0  # m/s^3
+      y:
+        has_velocity_limits    : true
+        max_velocity           : 2.50  # m/s
+        min_velocity           : -2.50 # m/s
+        has_acceleration_limits: true
+        max_acceleration       : 1.0  # m/s^2
+        min_acceleration       : 1.0 # m/s^2
+        has_jerk_limits        : true
+        max_jerk               : 1.0  # m/s^3
+        min_jerk               : -1.0  # m/s^3
+    angular:
+      z:
+        has_velocity_limits    : false
+        max_velocity           : 1.7  # rad/s
+        has_acceleration_limits: true
+        max_acceleration       : 1.5  # rad/s^2
+        has_jerk_limits        : true
+        max_jerk               : 3.0  # rad/s^3
+
+# Joint State Broadcaster
+/**/joint_state_broadcaster:
+  ros__parameters:
+    {}
+
+    
+
+

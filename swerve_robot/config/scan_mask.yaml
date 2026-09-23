@@ -1,0 +1,14 @@
+/**/scan_mask_node:
+  ros__parameters:
+
+    input_topic: scan_raw #/robot1/scan_raw --> macth with the bridge yaml
+    output_topic: scan #robot1/scan
+
+# sectors are angles in radians, 0 is front of robot, direction is against the clock
+    sectors: [
+      1.31, 1.83,
+      2.77, 2.92,
+      3.36, 3.51,
+      4.45, 4.97,
+      ]
+

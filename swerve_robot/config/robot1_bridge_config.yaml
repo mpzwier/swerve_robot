@@ -1,0 +1,23 @@
+# synchronize the clock between Gazebo/Ros, send IMU and Lidar data to Ros
+
+# All ros_topic_name names must be relative instead of global so that the names will get the namespace used in the launch file, in short the name should be without /
+# All gz_topic_name names should have the name of the robot in it, like /robot1/..... this is not done automatically by namespace
+
+- ros_topic_name: "imu" 
+  gz_topic_name: "/robot1/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "scan_raw"
+  gz_topic_name: "/robot1/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "scan/points"
+  gz_topic_name: "/robot1/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
