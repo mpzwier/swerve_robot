@@ -1,7 +1,0 @@
-image: map.pgm #same name as the map
-mode: trinary
-resolution: 0.050
-origin: [-10.947, -10.481, 0] #position of the map
-negate: 0
-occupied_thresh: 0.65 #default
-free_thresh: 0.196 #default
